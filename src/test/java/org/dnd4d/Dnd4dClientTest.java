@@ -41,7 +41,7 @@ public class Dnd4dClientTest {
     public void setUp() {
         initMocks(this);
 
-        sut = new Dnd4dClient(ledController);
+        sut = new Dnd4dClient("localhost", 8081, "/test", ledController);
     }
 
     @After

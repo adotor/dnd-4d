@@ -12,8 +12,9 @@ import io.vertx.core.logging.LoggerFactory;
 public class Dnd4dClient extends AbstractVerticle {
     private final Logger logger = LoggerFactory.getLogger(Dnd4dClient.class);
 
+    private static final String DEFAULT_HOSTNAME = "10.89.0.115";
     public static final int DEFAULT_PORT = 8081;
-    public static final String WEBSOCKET_URI = "/ourWebsocket";
+    public static final String DEFAULT_URI = "/dnd4d";
 
     private enum State {
         ON,OFF
@@ -21,21 +22,34 @@ public class Dnd4dClient extends AbstractVerticle {
 
     private LedController ledController;
 
+    private final String hostname;
+    private final int port;
+    private final String uri;
+
     public Dnd4dClient() {
+        this.hostname = DEFAULT_HOSTNAME;
+        this.port = DEFAULT_PORT;
+        this.uri = DEFAULT_URI;
+
         this.ledController = new LedController(RaspiPin.GPIO_01, PinState.LOW);
     }
 
-    public Dnd4dClient(LedController ledController) {
+    public Dnd4dClient(String hostname, int port, String uri, LedController ledController) {
+        this.hostname = hostname;
+        this.port = port;
+        this.uri = uri;
         this.ledController = ledController;
     }
 
     @Override
     public void start(Future<Void> fut) {
-        logger.info("Opening websocket on " + WEBSOCKET_URI + ":" + DEFAULT_PORT);
+        logger.info("Opening websocket on " + DEFAULT_URI + ":" + DEFAULT_PORT);
 
         vertx
-                .createHttpClient(new HttpClientOptions().setDefaultPort(DEFAULT_PORT))
-                .websocket(WEBSOCKET_URI, websocket -> {
+                .createHttpClient(new HttpClientOptions()
+                        .setDefaultHost(hostname)
+                        .setDefaultPort(port))
+                .websocket(uri, websocket -> {
                     websocket.frameHandler(frame -> {
                         logger.info("Received message:" + frame.textData());
 
