@@ -1,0 +1,22 @@
+{
+  "token": "DTU9uYDiywCKvR6yrru8qICJ",
+  "team_id": "T32JEB5UP",
+  "api_app_id": "A761TQM1P",
+  "event": {
+    "type": "dnd_updated",
+    "user": "U76JMJB1S",
+    "dnd_status": {
+      "dnd_enabled": true,
+      "next_dnd_start_ts": 1506024000,
+      "next_dnd_end_ts": 1506060000,
+      "snooze_enabled": false
+    },
+    "event_ts": "1506012147.000215"
+  },
+  "type": "event_callback",
+  "authed_users": [
+    "U76JMJB1S"
+  ],
+  "event_id": "Ev76QD41J6",
+  "event_time": 1506012147
+}
