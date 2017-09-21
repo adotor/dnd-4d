@@ -6,6 +6,8 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 
+import java.util.ArrayList;
+
 public class LedControl {
 
     public static void main(String[] args) throws InterruptedException {
@@ -24,7 +26,6 @@ public class LedControl {
         // turn off GPIO 1
         pin.low();
         System.out.println("light is: OFF");
-
         // wait 1 second
         Thread.sleep(1000);
 
@@ -34,5 +35,8 @@ public class LedControl {
 
         // release the GPIO controller resources
         gpio.shutdown();
+
+        final ArrayList<String> list = new ArrayList<>();
+
     }
 }
