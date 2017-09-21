@@ -35,8 +35,5 @@ public class LedControl {
 
         // release the GPIO controller resources
         gpio.shutdown();
-
-        final ArrayList<String> list = new ArrayList<>();
-
     }
 }
