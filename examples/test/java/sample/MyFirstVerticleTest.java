@@ -1,7 +1,5 @@
 package sample;
 
-import static org.junit.Assert.*;
-
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
