@@ -9,6 +9,8 @@ import io.vertx.core.http.WebSocketFrame;
 
 public class Dnd4dClient extends AbstractVerticle {
 
+    public static final String WEBSOCKET_URI = "/ourWebsocket";
+
     private enum State {
         ON,OFF
     }
@@ -27,7 +29,7 @@ public class Dnd4dClient extends AbstractVerticle {
     public void start(Future<Void> fut) {
         vertx
                 .createHttpClient(new HttpClientOptions().setDefaultPort(8081))
-                .websocket("/myuri", websocket -> {
+                .websocket(WEBSOCKET_URI, websocket -> {
                     websocket.frameHandler(frame -> {
                         System.out.println("Client: Received message:" + frame.textData());
 
