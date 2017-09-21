@@ -6,9 +6,13 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.WebSocketFrame;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 
 public class Dnd4dClient extends AbstractVerticle {
+    private final Logger logger = LoggerFactory.getLogger(Dnd4dClient.class);
 
+    public static final int DEFAULT_PORT = 8081;
     public static final String WEBSOCKET_URI = "/ourWebsocket";
 
     private enum State {
@@ -27,14 +31,17 @@ public class Dnd4dClient extends AbstractVerticle {
 
     @Override
     public void start(Future<Void> fut) {
+        logger.info("Opening websocket on " + WEBSOCKET_URI + ":" + DEFAULT_PORT);
+
         vertx
-                .createHttpClient(new HttpClientOptions().setDefaultPort(8081))
+                .createHttpClient(new HttpClientOptions().setDefaultPort(DEFAULT_PORT))
                 .websocket(WEBSOCKET_URI, websocket -> {
                     websocket.frameHandler(frame -> {
-                        System.out.println("Client: Received message:" + frame.textData());
+                        logger.info("Received message:" + frame.textData());
 
                         if (!canHandle(frame)) {
-                            System.out.println("Ignoring unknown event.");
+                            logger.warn("Ignoring unknown event.");
+                            return;
                         }
 
                         final State state = State.valueOf(frame.textData());
