@@ -12,12 +12,16 @@ import io.vertx.core.logging.LoggerFactory;
 public class Dnd4dClient extends AbstractVerticle {
     private final Logger logger = LoggerFactory.getLogger(Dnd4dClient.class);
 
-    private static final String DEFAULT_HOSTNAME = "10.89.0.220";
-    public static final int DEFAULT_PORT = 8080;
+    private static final String DEFAULT_HOSTNAME = "limitless-thicket-75961.herokuapp.com";
+    public static final int DEFAULT_PORT = 443;
     public static final String DEFAULT_URI = "/dnd4d";
 
+//    private static final String DEFAULT_HOSTNAME = "10.89.0.220";
+//    public static final int DEFAULT_PORT = 8080;
+//    public static final String DEFAULT_URI = "/dnd4d";
+
     private enum State {
-        ON,OFF
+        ON, OFF
     }
 
     private LedController ledController;
@@ -47,6 +51,8 @@ public class Dnd4dClient extends AbstractVerticle {
 
         vertx
                 .createHttpClient(new HttpClientOptions()
+                        .setSsl(true)
+                        .setTrustAll(true)
                         .setDefaultHost(hostname)
                         .setDefaultPort(port))
                 .websocket(uri, websocket -> {
@@ -68,10 +74,12 @@ public class Dnd4dClient extends AbstractVerticle {
                                 break;
                         }
                     })
-                    .closeHandler(unused -> {
-                        fut.complete();
-                    });
+                            .closeHandler(unused -> {
+                                logger.info("Websocket closed.");
+                                ledController.off();
+                            });
                 });
+        fut.complete();
 
     }
 
